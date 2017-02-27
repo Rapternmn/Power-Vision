@@ -420,68 +420,73 @@ def Sharpen(image):
     output_3 = cv2.filter2D(image, -1, kernel_sharpen_3)
     return output_3
 
-'''Capture Serial Input and Image '''
-
-# init()
-# print 'initilizing Camera'
-# Serial_Cap('/home/rapter/GOR')
 
 
-# image = Serial_Cap()
-# Capture_Vlc_Img()
-# image = Camera_Capture()
-''' Read Image '''
 
-image =  cv2.imread('half.jpg')
-ratio = image.shape[0]/500.0
-orig= imutils.resize(image,height = 500)
+if __name__ == "__main__":
 
-# image =  cv2.imread('image_prefix.tiff')
+	'''Capture Serial Input and Image '''
 
-show(orig)
+	# init()
+	# print 'initilizing Camera'
+	# Serial_Cap('/home/rapter/GOR')
 
-os.system('rm image_prefix.tiff')
-os.system('rm crop_*')
 
-orig = image
-''' Create Initial Boundary  '''
+	# image = Serial_Cap()
+	# Capture_Vlc_Img()
+	# image = Camera_Capture()
+	''' Read Image .... useful for testing with a static image '''
 
-image = Bounding(image)
+	image =  cv2.imread('half.jpg')
+	ratio = image.shape[0]/500.0
+	orig= imutils.resize(image,height = 500)
 
-''' PreProcessing '''
+	# image =  cv2.imread('image_prefix.tiff')
 
-image =  PreProcessing(image)
-# show(image,'PreProcessing')
-''' Bounding Box Coorinates '''
+	show(orig)
 
-box=Bounding_Box(image)
+	os.system('rm image_prefix.tiff')
+	os.system('rm crop_*')
 
-''' Scanned Output '''
+	orig = image
+	''' Create Initial Boundary  '''
 
-warped = Scanned(orig,box,51,10)
-show(warped,'Scanned')
-angle =  compute_skew_angle(warped)
-# if abs(angle)>3:
-#     warped =  deskew(warped,angle)
-#     show(warped,'deskew')
-'''Erosion operations on otsu image '''
-ret2,th2 = cv2.threshold(warped,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-show(th2,'otsu on deskewed image')
-warped_new=th2
-warped_new = cv2.dilate(warped_new,kernel(N=3,Type=4),iterations=1) 
-show(warped,'dilate')
-warped_new = cv2.erode(warped_new,kernel(N=5,Type=4),iterations=8)
-show(warped_new,'Erosion')
-# warped_new = cv2.erode(warped,kernel(N=5),iterations=10)
+	image = Bounding(image)
 
-''' Crop '''
+	''' PreProcessing '''
 
-k = Crop(warped_new,warped)
-print k
-''' Speak '''
-if k ==0 :
-    cv2.imwrite('crop_0.jpg',warped)
-    speak("crop_0.jpg")
-for i in range(k):
-    print speak
-    speak("crop_"+str(i)+".jpg")
+	image =  PreProcessing(image)
+	# show(image,'PreProcessing')
+	''' Bounding Box Coorinates '''
+
+	box=Bounding_Box(image)
+
+	''' Scanned Output '''
+
+	warped = Scanned(orig,box,51,10)
+	show(warped,'Scanned')
+	angle =  compute_skew_angle(warped)
+	# if abs(angle)>3:
+	#     warped =  deskew(warped,angle)
+	#     show(warped,'deskew')
+	'''Erosion operations on otsu image '''
+	ret2,th2 = cv2.threshold(warped,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+	show(th2,'otsu on deskewed image')
+	warped_new=th2
+	warped_new = cv2.dilate(warped_new,kernel(N=3,Type=4),iterations=1) 
+	show(warped,'dilate')
+	warped_new = cv2.erode(warped_new,kernel(N=5,Type=4),iterations=8)
+	show(warped_new,'Erosion')
+	# warped_new = cv2.erode(warped,kernel(N=5),iterations=10)
+
+	''' Crop '''
+
+	k = Crop(warped_new,warped)
+	print k
+	''' Speak '''
+	if k ==0 :
+	    cv2.imwrite('crop_0.jpg',warped)
+	    speak("crop_0.jpg")
+	for i in range(k):
+	    print speak
+	    speak("crop_"+str(i)+".jpg")
