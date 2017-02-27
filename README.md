@@ -1,6 +1,17 @@
 # Power-Vision
 
-Primary focus was to detect a page, apply four-point transform method to get an entire page and remove the background, identify multiple columns in the page by applying morphological transforms(Erosion + Dilation) , crop the images and pass them sequentially into pytesseract ocr to get an appropriate text output. Finally converting text to speech.
+
+Primary goal was to enable Blind people to analyze text content via audio outputs
+
+We applied following methodology to achive this goal :
+
+1) Detect and extract a page by applying four-point transform method 
+
+2) Identify multiple columns in the page by applying morphological transforms(Erosion + Dilation)
+
+3) Crop the images and pass them sequentially into pytesseract ocr to get an appropriate text output. 
+
+4) Converting text to speech.
 
 Example :
 
